@@ -56,6 +56,7 @@ ai_exposure = []
 ao_opto = []
 ai_opto_loopback = []
 opto_stim = []
+rig_names = []
 
 if record_left_camera:
     # MurthyLab-PC05 -> Cam1
@@ -66,7 +67,8 @@ if record_left_camera:
     ao_opto.append("Dev1/ao1")
     ai_opto_loopback.append("Dev1/ai9")
     opto_stim.append(opto_stim_left)
-
+    rig_names.append("rig2_1")
+    
 if record_right_camera:
     # MurthyLab-PC05 -> Cam2
     cams.append("18159111")
@@ -76,6 +78,8 @@ if record_right_camera:
     ao_opto.append("Dev1/ao3")
     ai_opto_loopback.append("Dev1/ai25")
     opto_stim.append(opto_stim_right)
+    rig_names.append("rig2_2")
+    
 ###################################################
 
 ###################################################
@@ -216,9 +220,9 @@ if daq_controller.is_saving:
     with h5py.File(data_path, "r") as daqF:
         daq_data = daqF["data"]
         has_opto = [stim is not None for stim in opto_stim]
-        for c, (cam, cam_has_opto) in enumerate(zip(cams, has_opto)):
+        for c, (cam, cam_has_opto, rig) in enumerate(zip(cams, has_opto, rig_names)):
             cam_filename = f"{expt_name}_{cam}"
-            vid_dst = f"D:/Motif/{cam_filename}"
+            vid_dst = f"D:/Motif/{cam_filename}_{rig}"
             print(f"Saving camera data to: {vid_dst}")
             for _ in range(3):
                 vid_src = glob.glob(f"D:/Motif/{cam}/{cam_filename}*")[0]
